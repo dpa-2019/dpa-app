@@ -1,0 +1,10 @@
+<p>
+  register!
+  <label>Hero name:
+    <input #heroName />
+  </label>
+  <label>Hero age:
+    <input #heroAge />
+  </label>
+  <button (click)="createUser(heroName.value, heroAge.value)">submit</button>
+</p>

@@ -1,0 +1,7 @@
+{
+  "/api/*": {
+    "target": "http://dpa-env.a9jsi7nmmg.us-west-2.elasticbeanstalk.com",
+    "secure": false,
+    "pathRewrite": {"^/api" : ""}
+  }
+}
