@@ -13,18 +13,22 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class UserComponent implements OnInit {
 
-  constructor( private http: HttpClient) { }
-  getUser(name: string): void {
+  public loggedinuser: User;
+  public message: string;
+  constructor( private http: HttpClient) {}
+  getUser(email: string, password: string): void {
 
-    console.log('aaaaa ' + name);
-    const url = '/api/user/get?name='+name+'&age=0';
-    /*return this.http.get<User>(url).pipe(
-      tap(_ => console.log('fetched user name=${name}')),
-      catchError(this.handleError<User>('getHero name=${name}'))
-    );*/
-
-    this.http.get<User>(url).subscribe((res) => { console.log(res)});
-
+    const user = {'email': email, 'password': password};
+    const url = '/api/user/login';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    //this.http.post<User>(url, user, httpOptions).subscribe((res: any) => { console.log(res)});
+    this.http.post<User>(url, user, httpOptions).subscribe(
+      (res: any) => { this.loggedinuser = res; this.message = 'Welcome, '+this.loggedinuser.firstname+'!'},
+      (error) => { console.log(error); this.message = error.error });
   }
 
   ngOnInit() {

@@ -13,16 +13,26 @@ import { catchError, map, tap } from 'rxjs/operators';
 export class RegisterComponent implements OnInit {
 
 constructor( private http: HttpClient) { }
-  createUser(name: string): void {
+  createUser(firstname: string, lastname: string, password: string, email: string,
+    birthyear: number, birthday: number, birthmonth: number): void {
 
     console.log('aaaaa ' + name);
-    const url = '/api/user/create?name='+name+'&age=0';
-    /*return this.http.get<User>(url).pipe(
-      tap(_ => console.log('fetched user name=${name}')),
-      catchError(this.handleError<User>('getHero name=${name}'))
-    );*/
+    const user = {'firstname' : firstname,
+                    'lastname': lastname,
+                    'password': password,
+                    'email': email,
+                    'birthyear': birthyear,
+                    'birthday': birthday,
+                    'birthmonth': birthmonth};
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'my-auth-token'
+      })
+    };
+    const url = '/api/user/register';
 
-    this.http.get<User>(url).subscribe((res) => { console.log(res)});
+    this.http.put<User>(url, user, httpOptions).subscribe((res) => { console.log(res)});
 
   }
 

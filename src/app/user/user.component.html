@@ -1,7 +1,18 @@
 <p>
-  user works!
-  <label>Hero name:
-    <input #heroName />
+  <label>Log In:
+    <input #email  type="text" placeholder="email"/>
+    <br/>
+    <input #password  type="password" placeholder="password"/>
   </label>
-  <button (click)="getUser(heroName.value)">hello</button>
+  <button (click)="getUser(email.value, password.value)">Log In</button>
+  <br/>
+  <br/>
+  <label>Don't have an account?
+  </label>
+  <a href="/register">Register!</a>
+
+
 </p>
+
+<div *ngIf="message != null"> {{ message }}</div>
+
