@@ -5,4 +5,5 @@ export class User {
   birthday: number;
   birthmonth: number;
   birthyear: number;
+  token: string;
 }

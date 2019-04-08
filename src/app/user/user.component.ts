@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from './user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -15,7 +16,21 @@ export class UserComponent implements OnInit {
 
   public loggedinuser: User;
   public message: string;
-  constructor( private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) {
+      this.loggedinuser = JSON.parse(localStorage.getItem('loggedinuser'));
+  }
+
+
+  logout() {
+    localStorage.removeItem('access_token');
+        localStorage.removeItem('loggedinuser');
+
+  }
+
+  public get loggedIn(): boolean{
+    return localStorage.getItem('access_token') !==  null;
+  }
+
   getUser(email: string, password: string): void {
 
     const user = {'email': email, 'password': password};
@@ -27,7 +42,13 @@ export class UserComponent implements OnInit {
     };
     //this.http.post<User>(url, user, httpOptions).subscribe((res: any) => { console.log(res)});
     this.http.post<User>(url, user, httpOptions).subscribe(
-      (res: any) => { this.loggedinuser = res; this.message = 'Welcome, '+this.loggedinuser.firstname+'!'},
+      (res: any) => {
+
+        localStorage.setItem('access_token', res.access_token?res.access_token : 'fake-token');
+        localStorage.setItem('loggedinuser', JSON.stringify(res));
+
+        this.router.navigateByUrl('/profile');
+        },
       (error) => { console.log(error); this.message = error.error });
   }
 
